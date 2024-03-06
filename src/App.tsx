@@ -26,12 +26,11 @@ function App() {
         console.log("Random Data:", userData);
         setData(userData);
         setIsPending(false);
+        setRandomCommentId((prev) => prev + 1);
       }, 2000);
     } catch (error) {
       console.error("Error fetching data:", error);
       setIsPending(false);
-    } finally {
-      setRandomCommentId((prev) => prev + 1);
     }
   };
 
