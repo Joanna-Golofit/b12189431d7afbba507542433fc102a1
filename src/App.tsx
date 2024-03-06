@@ -1,16 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
+interface CommentsData {
+  postId: number;
+  id: number;
+  name: string;
+  email: string;
+  body: string;
+}
+
 function App() {
-  const [count, setCount] = useState(0);
+  const [randomCommentId, setRandomCommentId] = useState(1);
+  const [data, setData] = useState<CommentsData | null>(null);
+  const apiUrl = "https://jsonplaceholder.typicode.com/comments";
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/${randomCommentId}`);
+        const userData = await response.json();
+        console.log("Random Data:", userData);
+        setData(userData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [randomCommentId]);
 
   return (
     <>
-      <button onClick={() => setCount((count) => count + 1)}>
-        Fetch Data {count}
+      <button onClick={() => setRandomCommentId((prev) => prev + 1)}>
+        Fetch Data {randomCommentId}
       </button>
       <p>
-        Edit <code>src/App.tsx</code> and save to test HMR
+        <b>{data?.name}</b>
+        <br />
+        {data?.body}
       </p>
     </>
   );
