@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import { SpinnerCircular } from "spinners-react";
 
 interface CommentsData {
   postId: number;
@@ -15,7 +16,6 @@ function App() {
   const [isPending, setIsPending] = useState(false);
   const apiUrl = "https://jsonplaceholder.typicode.com/comments";
 
-  // useEffect(() => {
   const fetchData = async () => {
     try {
       setIsPending(true);
@@ -30,21 +30,19 @@ function App() {
     } catch (error) {
       console.error("Error fetching data:", error);
       setIsPending(false);
-      // }
     } finally {
-      // setIsPending(false);
       setRandomCommentId((prev) => prev + 1);
     }
   };
 
-  // fetchData();
-  // }, [randomCommentId]);
-
   return (
     <>
-      {/* <button onClick={() => setRandomCommentId((prev) => prev + 1)}> */}
       <button onClick={fetchData}>
-        {isPending ? "pending" : `Fetch Data ${randomCommentId}`}
+        {isPending ? (
+          <SpinnerCircular size="20" />
+        ) : (
+          `Fetch Data ${randomCommentId}`
+        )}
       </button>
       <p>
         <b>{data?.name}</b>
