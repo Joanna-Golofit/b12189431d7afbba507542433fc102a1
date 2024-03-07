@@ -1,8 +1,10 @@
 import { useState } from "react";
 import "./App.css";
 import { SpinnerCircular } from "spinners-react";
+import { fetchCommentsData } from "./services/apiService";
+import _debounce from "lodash/debounce";
 
-interface CommentsData {
+export interface CommentsData {
   postId: number;
   id: number;
   name: string;
@@ -14,40 +16,34 @@ function App() {
   const [randomCommentId, setRandomCommentId] = useState(1);
   const [data, setData] = useState<CommentsData | null>(null);
   const [isPending, setIsPending] = useState(false);
-  const apiUrl = "https://jsonplaceholder.typicode.com/comments";
 
-  const fetchData = async () => {
-    try {
-      setIsPending(true);
-      const response = await fetch(`${apiUrl}/${randomCommentId}`);
-      const userData = await response.json();
+  const debouncedFetchData = _debounce(() => {
+    fetchCommentsData(
+      randomCommentId,
+      setData,
+      setRandomCommentId,
+      setIsPending
+    );
+  }, 400);
 
-      setTimeout(() => {
-        console.log("Random Data:", userData);
-        setData(userData);
-        setIsPending(false);
-        setRandomCommentId((prev) => prev + 1);
-      }, 2000);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setIsPending(false);
-    }
+  const handleFetchData = () => {
+    debouncedFetchData();
   };
 
   return (
     <>
-      <button onClick={fetchData}>
-        {isPending ? (
-          <SpinnerCircular size="20" />
-        ) : (
-          `Fetch Data ${randomCommentId}`
-        )}
+      <button
+        onClick={handleFetchData}
+        className={isPending ? "pending" : "standard"}
+      >
+        {isPending ? <SpinnerCircular size="20" /> : "Fetch Data"}
       </button>
-      <p>
-        <b>{data?.name}</b>
-        <br />
-        {data?.body}
-      </p>
+      {data && (
+        <article>
+          <b>{data?.name}</b>
+          <q>{data?.body}</q>
+        </article>
+      )}
     </>
   );
 }
