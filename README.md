@@ -2,7 +2,10 @@
 
 ## How to start:
 
-after downloading the repo just type:
+after downloading the repo navigate to the project directory:
+`cd b12189431d7afbba507542433fc102a1`
+
+then type:
 `npm install`
 
 to run the project type:
