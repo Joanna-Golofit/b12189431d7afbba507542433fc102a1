@@ -1,7 +1,5 @@
-// import { useState } from "react";
-
 import { Dispatch, SetStateAction } from "react";
-import { CommentsData } from "../App";
+import { CommentsData } from "../components/Comments";
 
 const apiUrl = "https://jsonplaceholder.typicode.com/comments";
 

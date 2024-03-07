@@ -50,12 +50,12 @@ article {
 
 @keyframes changeColorDarker {
   0% {
-    color: lightgray;
+    background: lightgray;
   }
   50% {
     background: gray;
   }
-  50% {
+  100% {
     background: lightgray;
   }
 }
